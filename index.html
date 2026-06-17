@@ -332,12 +332,18 @@
 
   <!-- 2. 首次綁定畫面 -->
   <div class="bind-section" id="bindSection">
-    <h2>請選擇您的姓名進行綁定</h2>
-    <p>首次登入請從以下名單中選擇您的姓名，系統將您的 Google 帳號與報名資料綁定，之後登入就不需再選擇。</p>
+    <h2>請輸入您的姓名與身分證後4碼進行綁定</h2>
+    <p>首次登入需驗證身份，之後登入只需 Google 帳號即可直接進入。</p>
 
     <div class="user-badge" id="userBadge"></div>
 
-    <div class="name-grid" id="nameGrid"></div>
+    <div class="field-group" style="margin-bottom:10px">
+      <input type="text" id="bindNameInput" placeholder="報名姓名，例如：王小明" maxlength="10" />
+    </div>
+    <div class="input-group">
+      <input type="text" id="bindIdInput" placeholder="身分證後4碼，例如：6737" maxlength="4" style="letter-spacing:2px" />
+      <button class="primary" onclick="bindAccount()">綁定</button>
+    </div>
     <p class="error-msg" id="bindError"></p>
 
     <p style="margin-top:16px; font-size:0.8rem; color:#999; text-align:center">
@@ -433,9 +439,7 @@
     }
   }
 
-  let selectedName = null;
-
-  async function renderBindSection(user) {
+  function renderBindSection(user) {
     const badge = document.getElementById('userBadge');
     const name = user.user_metadata?.full_name || user.email;
     const avatar = user.user_metadata?.avatar_url;
@@ -444,48 +448,22 @@
       ? `<img class="user-avatar" src="${avatar}" /><div class="user-info">已登入為 <strong>${name}</strong></div>`
       : `<div class="user-avatar-placeholder">${name[0]}</div><div class="user-info">已登入為 <strong>${name}</strong></div>`;
 
-    // 撈取尚未綁定的參加者名單
-    const { data } = await db
-      .from('participants')
-      .select('id, name')
-      .is('google_id', null)
-      .order('id');
-
-    const grid = document.getElementById('nameGrid');
-    grid.innerHTML = '';
-
-    if (data && data.length > 0) {
-      data.forEach(p => {
-        const btn = document.createElement('button');
-        btn.className = 'name-btn';
-        btn.textContent = p.name;
-        btn.dataset.id = p.id;
-        btn.dataset.name = p.name;
-        btn.onclick = () => selectName(btn, p.name);
-        grid.appendChild(btn);
-      });
-      grid.innerHTML += `<button class="primary confirm-btn" id="confirmBtn" onclick="bindAccount()" style="display:none;grid-column:1/-1">確認綁定</button>`;
-    } else {
-      grid.innerHTML = '<p style="color:#999;font-size:0.9rem">所有人員已完成綁定。</p>';
-    }
-
     show('bindSection');
   }
 
-  function selectName(btn, name) {
-    document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedName = name;
-    document.getElementById('confirmBtn').style.display = 'block';
-    document.getElementById('bindError').style.display = 'none';
-  }
-
   async function bindAccount() {
+    const name = document.getElementById('bindNameInput').value.trim();
+    const idLast4 = document.getElementById('bindIdInput').value.trim().toUpperCase();
     const errEl = document.getElementById('bindError');
     errEl.style.display = 'none';
 
-    if (!selectedName) {
-      errEl.textContent = '請選擇您的姓名';
+    if (!name) {
+      errEl.textContent = '請輸入姓名';
+      errEl.style.display = 'block';
+      return;
+    }
+    if (!idLast4 || idLast4.length !== 4) {
+      errEl.textContent = '請輸入身分證後4碼';
       errEl.style.display = 'block';
       return;
     }
@@ -496,12 +474,19 @@
     const { data, error } = await db
       .from('participants')
       .select('*')
-      .eq('name', selectedName)
+      .eq('name', name)
       .is('google_id', null)
       .single();
 
     if (error || !data) {
-      errEl.textContent = '此姓名已被綁定或發生錯誤，請稍後再試。';
+      errEl.textContent = `找不到「${name}」的報名資料，或此帳號已被綁定。`;
+      errEl.style.display = 'block';
+      return;
+    }
+
+    const storedLast4 = data.id_number ? data.id_number.slice(-4).toUpperCase() : '';
+    if (storedLast4 !== idLast4) {
+      errEl.textContent = '身分證後4碼不正確，請重新確認。';
       errEl.style.display = 'block';
       return;
     }
