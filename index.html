@@ -258,6 +258,37 @@
       display: none;
     }
 
+    .name-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .name-btn {
+      background: #f4f8fc;
+      border: 2px solid #d1dce8;
+      border-radius: 8px;
+      padding: 10px 6px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #1a3a5c;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s, border-color 0.15s;
+      font-weight: 600;
+    }
+    .name-btn:hover { background: #ddeaf6; border-color: #2d6a9f; }
+    .name-btn.selected { background: #2d6a9f; color: white; border-color: #2d6a9f; }
+
+    .confirm-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      margin-top: 4px;
+      display: none;
+    }
+
     .loading {
       text-align: center;
       color: #666;
@@ -301,15 +332,12 @@
 
   <!-- 2. 首次綁定畫面 -->
   <div class="bind-section" id="bindSection">
-    <h2>請輸入您的姓名進行綁定</h2>
-    <p>首次登入需輸入報名時的姓名，系統將您的 Google 帳號與報名資料綁定，之後登入就不需再輸入。</p>
+    <h2>請選擇您的姓名進行綁定</h2>
+    <p>首次登入請從以下名單中選擇您的姓名，系統將您的 Google 帳號與報名資料綁定，之後登入就不需再選擇。</p>
 
     <div class="user-badge" id="userBadge"></div>
 
-    <div class="input-group">
-      <input type="text" id="bindNameInput" placeholder="請輸入報名姓名" maxlength="10" />
-      <button class="primary" onclick="bindAccount()">綁定</button>
-    </div>
+    <div class="name-grid" id="nameGrid"></div>
     <p class="error-msg" id="bindError"></p>
 
     <p style="margin-top:16px; font-size:0.8rem; color:#999; text-align:center">
@@ -405,7 +433,9 @@
     }
   }
 
-  function renderBindSection(user) {
+  let selectedName = null;
+
+  async function renderBindSection(user) {
     const badge = document.getElementById('userBadge');
     const name = user.user_metadata?.full_name || user.email;
     const avatar = user.user_metadata?.avatar_url;
@@ -414,16 +444,48 @@
       ? `<img class="user-avatar" src="${avatar}" /><div class="user-info">已登入為 <strong>${name}</strong></div>`
       : `<div class="user-avatar-placeholder">${name[0]}</div><div class="user-info">已登入為 <strong>${name}</strong></div>`;
 
+    // 撈取尚未綁定的參加者名單
+    const { data } = await db
+      .from('participants')
+      .select('id, name')
+      .is('google_id', null)
+      .order('id');
+
+    const grid = document.getElementById('nameGrid');
+    grid.innerHTML = '';
+
+    if (data && data.length > 0) {
+      data.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'name-btn';
+        btn.textContent = p.name;
+        btn.dataset.id = p.id;
+        btn.dataset.name = p.name;
+        btn.onclick = () => selectName(btn, p.name);
+        grid.appendChild(btn);
+      });
+      grid.innerHTML += `<button class="primary confirm-btn" id="confirmBtn" onclick="bindAccount()" style="display:none;grid-column:1/-1">確認綁定</button>`;
+    } else {
+      grid.innerHTML = '<p style="color:#999;font-size:0.9rem">所有人員已完成綁定。</p>';
+    }
+
     show('bindSection');
   }
 
+  function selectName(btn, name) {
+    document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedName = name;
+    document.getElementById('confirmBtn').style.display = 'block';
+    document.getElementById('bindError').style.display = 'none';
+  }
+
   async function bindAccount() {
-    const name = document.getElementById('bindNameInput').value.trim();
     const errEl = document.getElementById('bindError');
     errEl.style.display = 'none';
 
-    if (!name) {
-      errEl.textContent = '請輸入姓名';
+    if (!selectedName) {
+      errEl.textContent = '請選擇您的姓名';
       errEl.style.display = 'block';
       return;
     }
@@ -431,21 +493,19 @@
     const { data: { session } } = await db.auth.getSession();
     const googleId = session.user.id;
 
-    // 檢查姓名是否存在且尚未被綁定
     const { data, error } = await db
       .from('participants')
       .select('*')
-      .eq('name', name)
+      .eq('name', selectedName)
       .is('google_id', null)
       .single();
 
     if (error || !data) {
-      errEl.textContent = `找不到「${name}」的報名資料，或此姓名已被綁定。請確認姓名是否正確。`;
+      errEl.textContent = '此姓名已被綁定或發生錯誤，請稍後再試。';
       errEl.style.display = 'block';
       return;
     }
 
-    // 綁定 google_id
     const { error: updateError } = await db
       .from('participants')
       .update({ google_id: googleId })
