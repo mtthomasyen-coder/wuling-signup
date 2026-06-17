@@ -403,7 +403,7 @@
 
   async function signOut() {
     await db.auth.signOut();
-    show('loginSection');
+    window.location.href = window.location.pathname;
   }
 
   async function init() {
