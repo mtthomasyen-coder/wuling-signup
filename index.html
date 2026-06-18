@@ -44,66 +44,12 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.25);
     }
 
-    /* Login screen */
-    .login-section { text-align: center; }
-    .login-section h2 { font-size: 1.1rem; color: #1a3a5c; margin-bottom: 8px; font-weight: 600; }
-    .login-section p { font-size: 0.88rem; color: #666; margin-bottom: 24px; line-height: 1.6; }
-
-    .google-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      background: white;
-      color: #3c4043;
-      border: 2px solid #dadce0;
-      border-radius: 8px;
-      padding: 12px 24px;
-      font-size: 1rem;
-      font-family: inherit;
+    .search-section h2 {
+      font-size: 1.1rem;
+      color: #1a3a5c;
+      margin-bottom: 16px;
       font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: background 0.2s, box-shadow 0.2s;
     }
-    .google-btn:hover { background: #f8f9fa; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
-    .google-btn svg { flex-shrink: 0; }
-
-    /* Bind screen */
-    .bind-section { display: none; }
-    .bind-section h2 { font-size: 1.1rem; color: #1a3a5c; margin-bottom: 8px; font-weight: 600; }
-    .bind-section p { font-size: 0.88rem; color: #666; margin-bottom: 20px; line-height: 1.6; }
-
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #f4f8fc;
-      border-radius: 8px;
-      padding: 10px 14px;
-      margin-bottom: 20px;
-    }
-    .user-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    .user-avatar-placeholder {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #2d6a9f;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .user-info { font-size: 0.88rem; color: #444; }
-    .user-info strong { color: #1a3a5c; }
 
     .input-group { display: flex; gap: 10px; }
 
@@ -118,7 +64,7 @@
     }
     input:focus { outline: none; border-color: #2d6a9f; }
 
-    button.primary {
+    button {
       background: #2d6a9f;
       color: white;
       border: none;
@@ -131,8 +77,8 @@
       transition: background 0.2s;
       white-space: nowrap;
     }
-    button.primary:hover { background: #1a3a5c; }
-    button.primary:disabled { background: #9ab3cc; cursor: not-allowed; }
+    button:hover { background: #1a3a5c; }
+    button:disabled { background: #9ab3cc; cursor: not-allowed; }
 
     .error-msg {
       color: #c0392b;
@@ -141,29 +87,16 @@
       display: none;
     }
 
-    /* Data section */
-    .data-section { display: none; }
+    .result-section { display: none; margin-top: 24px; }
 
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .divider { border: none; border-top: 1px solid #e8eef4; margin: 20px 0; }
+
+    .greeting {
+      color: #1a3a5c;
+      font-size: 1.1rem;
+      font-weight: 700;
       margin-bottom: 16px;
     }
-    .greeting { color: #1a3a5c; font-size: 1.05rem; font-weight: 700; }
-    .logout-btn {
-      background: none;
-      border: 1px solid #ccc;
-      color: #666;
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .logout-btn:hover { background: #f4f4f4; }
-
-    .divider { border: none; border-top: 1px solid #e8eef4; margin: 16px 0; }
 
     .info-grid { display: grid; gap: 10px; }
 
@@ -225,16 +158,8 @@
       font-size: 1.05rem;
       margin-top: 6px;
       background: #27ae60;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-family: inherit;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
     }
     .save-btn:hover { background: #1e8449; }
-    .save-btn:disabled { background: #9ab3cc; cursor: not-allowed; }
 
     .success-msg {
       background: #d5f5e3;
@@ -258,43 +183,16 @@
       display: none;
     }
 
-    .name-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .name-btn {
-      background: #f4f8fc;
-      border: 2px solid #d1dce8;
-      border-radius: 8px;
-      padding: 10px 6px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      color: #1a3a5c;
-      cursor: pointer;
-      text-align: center;
-      transition: background 0.15s, border-color 0.15s;
-      font-weight: 600;
-    }
-    .name-btn:hover { background: #ddeaf6; border-color: #2d6a9f; }
-    .name-btn.selected { background: #2d6a9f; color: white; border-color: #2d6a9f; }
-
-    .confirm-btn {
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      margin-top: 4px;
-      display: none;
-    }
-
-    .loading {
-      text-align: center;
+    .reset-btn {
+      background: none;
       color: #666;
-      padding: 20px 0;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+      padding: 0;
+      margin-top: 16px;
+      text-decoration: underline;
+      font-weight: normal;
     }
+    .reset-btn:hover { background: none; color: #333; }
 
     @media (max-width: 400px) {
       .card { padding: 20px; }
@@ -311,52 +209,18 @@
 </div>
 
 <div class="card">
-
-  <!-- 載入中 -->
-  <div class="loading" id="loadingSection">載入中...</div>
-
-  <!-- 1. 登入畫面 -->
-  <div class="login-section" id="loginSection" style="display:none">
-    <h2>請先登入以查詢您的報名資料</h2>
-    <p>為保護個人資料，需使用 Google 帳號驗證身份。<br>登入後可查詢報名資訊並補填必要資料。</p>
-    <button class="google-btn" onclick="signInWithGoogle()">
-      <svg width="20" height="20" viewBox="0 0 48 48">
-        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
-      使用 Google 帳號登入
-    </button>
-  </div>
-
-  <!-- 2. 首次綁定畫面 -->
-  <div class="bind-section" id="bindSection">
-    <h2>請輸入您的姓名與身分證後4碼進行綁定</h2>
-    <p>首次登入需驗證身份，之後登入只需 Google 帳號即可直接進入。</p>
-
-    <div class="user-badge" id="userBadge"></div>
-
-    <div class="field-group" style="margin-bottom:10px">
-      <input type="text" id="bindNameInput" placeholder="報名姓名，例如：王小明" maxlength="10" />
-    </div>
+  <div class="search-section">
+    <h2>請輸入您的姓名查詢報名資料</h2>
     <div class="input-group">
-      <input type="text" id="bindIdInput" placeholder="身分證後4碼，例如：6737" maxlength="4" style="letter-spacing:2px" />
-      <button class="primary" onclick="bindAccount()">綁定</button>
+      <input type="text" id="nameInput" placeholder="例如：王小明" maxlength="10" />
+      <button onclick="searchParticipant()">查詢</button>
     </div>
-    <p class="error-msg" id="bindError"></p>
-
-    <p style="margin-top:16px; font-size:0.8rem; color:#999; text-align:center">
-      <a href="#" onclick="signOut(); return false;" style="color:#999">登出</a>
-    </p>
+    <p class="error-msg" id="errorMsg"></p>
   </div>
 
-  <!-- 3. 個人資料畫面 -->
-  <div class="data-section" id="dataSection">
-    <div class="top-bar">
-      <div class="greeting" id="greeting"></div>
-      <button class="logout-btn" onclick="signOut()">登出</button>
-    </div>
+  <div class="result-section" id="resultSection">
+    <hr class="divider">
+    <p class="greeting" id="greeting"></p>
 
     <div class="info-grid" id="infoGrid"></div>
 
@@ -364,12 +228,12 @@
       <hr class="divider">
       <h3>⚠️ 請補填以下必填資料</h3>
 
-      <div class="field-group" id="birthdayGroup">
+      <div class="field-group">
         <label for="birthdayInput">出生年月日 <span>*</span></label>
         <input type="date" id="birthdayInput" />
       </div>
 
-      <div class="field-group" id="phoneGroup">
+      <div class="field-group">
         <label for="phoneInput">手機號碼 <span>*</span></label>
         <input type="tel" id="phoneInput" placeholder="例如：0912345678" maxlength="20" />
       </div>
@@ -381,8 +245,9 @@
     <div class="already-filled" id="alreadyFilled">
       ✅ 您的出生年月日與手機號碼已填寫完成，無需再次補填。
     </div>
-  </div>
 
+    <button class="reset-btn" onclick="resetSearch()">← 重新查詢</button>
+  </div>
 </div>
 
 <script>
@@ -392,122 +257,39 @@
   const { createClient } = supabase;
   const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  let currentParticipant = null;
+  let currentId = null;
 
-  function show(sectionId) {
-    ['loadingSection','loginSection','bindSection','dataSection'].forEach(id => {
-      document.getElementById(id).style.display = id === sectionId ? 'block' : 'none';
-    });
-  }
+  async function searchParticipant() {
+    const name = document.getElementById('nameInput').value.trim();
+    const errorMsg = document.getElementById('errorMsg');
+    const resultSection = document.getElementById('resultSection');
 
-  async function signInWithGoogle() {
-    await db.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: window.location.href }
-    });
-  }
-
-  async function signOut() {
-    await db.auth.signOut();
-    window.location.href = window.location.pathname;
-  }
-
-  async function init() {
-    show('loadingSection');
-    const { data: { session } } = await db.auth.getSession();
-
-    if (!session) {
-      show('loginSection');
-      return;
-    }
-
-    const user = session.user;
-    const googleId = user.id;
-
-    // 查詢是否已綁定
-    const { data } = await db
-      .from('participants')
-      .select('*')
-      .eq('google_id', googleId)
-      .single();
-
-    if (data) {
-      currentParticipant = data;
-      renderDataSection(data, user);
-    } else {
-      renderBindSection(user);
-    }
-  }
-
-  function renderBindSection(user) {
-    const badge = document.getElementById('userBadge');
-    const name = user.user_metadata?.full_name || user.email;
-    const avatar = user.user_metadata?.avatar_url;
-
-    badge.innerHTML = avatar
-      ? `<img class="user-avatar" src="${avatar}" /><div class="user-info">已登入為 <strong>${name}</strong></div>`
-      : `<div class="user-avatar-placeholder">${name[0]}</div><div class="user-info">已登入為 <strong>${name}</strong></div>`;
-
-    show('bindSection');
-  }
-
-  async function bindAccount() {
-    const name = document.getElementById('bindNameInput').value.trim();
-    const idLast4 = document.getElementById('bindIdInput').value.trim().toUpperCase();
-    const errEl = document.getElementById('bindError');
-    errEl.style.display = 'none';
+    errorMsg.style.display = 'none';
+    resultSection.style.display = 'none';
 
     if (!name) {
-      errEl.textContent = '請輸入姓名';
-      errEl.style.display = 'block';
+      errorMsg.textContent = '請輸入姓名';
+      errorMsg.style.display = 'block';
       return;
     }
-    if (!idLast4 || idLast4.length !== 4) {
-      errEl.textContent = '請輸入身分證後4碼';
-      errEl.style.display = 'block';
-      return;
-    }
-
-    const { data: { session } } = await db.auth.getSession();
-    const googleId = session.user.id;
 
     const { data, error } = await db
       .from('participants')
       .select('*')
-      .eq('name', name)
-      .is('google_id', null)
-      .single();
+      .eq('name', name);
 
-    if (error || !data) {
-      errEl.textContent = `找不到「${name}」的報名資料，或此帳號已被綁定。`;
-      errEl.style.display = 'block';
+    if (error || !data || data.length === 0) {
+      errorMsg.textContent = `找不到「${name}」的報名資料，請確認姓名是否正確。`;
+      errorMsg.style.display = 'block';
       return;
     }
 
-    const storedLast4 = data.id_number ? data.id_number.slice(-4).toUpperCase() : '';
-    if (storedLast4 !== idLast4) {
-      errEl.textContent = '身分證後4碼不正確，請重新確認。';
-      errEl.style.display = 'block';
-      return;
-    }
-
-    const { error: updateError } = await db
-      .from('participants')
-      .update({ google_id: googleId })
-      .eq('id', data.id);
-
-    if (updateError) {
-      errEl.textContent = '綁定失敗，請稍後再試。';
-      errEl.style.display = 'block';
-      return;
-    }
-
-    currentParticipant = { ...data, google_id: googleId };
-    renderDataSection(currentParticipant, session.user);
+    const p = data[0];
+    currentId = p.id;
+    renderResult(p);
   }
 
-  function renderDataSection(p, user) {
-    const name = user.user_metadata?.full_name || user.email;
+  function renderResult(p) {
     document.getElementById('greeting').textContent = `${p.name} 您好 👋`;
 
     const ebike = p.rent_ebike ? '<span class="badge">租借電輔車</span>' : '否';
@@ -548,9 +330,11 @@
       document.getElementById('alreadyFilled').style.display = 'none';
       if (hasBirthday) document.getElementById('birthdayInput').value = p.birthday;
       if (hasPhone) document.getElementById('phoneInput').value = p.phone;
+      document.getElementById('successMsg').style.display = 'none';
+      document.getElementById('saveBtn').style.display = 'block';
     }
 
-    show('dataSection');
+    document.getElementById('resultSection').style.display = 'block';
   }
 
   async function saveData() {
@@ -571,7 +355,7 @@
     const { error } = await db
       .from('participants')
       .update({ birthday, phone, updated_at: new Date().toISOString() })
-      .eq('id', currentParticipant.id);
+      .eq('id', currentId);
 
     saveBtn.disabled = false;
     saveBtn.textContent = '儲存資料';
@@ -582,13 +366,20 @@
     document.getElementById('saveBtn').style.display = 'none';
   }
 
-  // 監聽登入狀態變化
-  db.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN') init();
-    else if (event === 'SIGNED_OUT') show('loginSection');
-  });
+  function resetSearch() {
+    document.getElementById('nameInput').value = '';
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('errorMsg').style.display = 'none';
+    document.getElementById('birthdayInput').value = '';
+    document.getElementById('phoneInput').value = '';
+    document.getElementById('saveBtn').style.display = 'block';
+    document.getElementById('saveBtn').disabled = false;
+    currentId = null;
+  }
 
-  init();
+  document.getElementById('nameInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') searchParticipant();
+  });
 </script>
 
 </body>
